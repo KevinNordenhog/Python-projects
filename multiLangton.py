@@ -12,7 +12,8 @@ height = 600
 #sets starting position and direction
 #position  = [(int) (width/2), (int)(height/2)]
 #direction = 0
-antNumber = 10
+#antNumber = 10
+antNumber = int(input("How many ants do you want?"))
 
 #Colors in rgb
 black = (0,0,0,)

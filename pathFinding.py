@@ -1,6 +1,4 @@
 #use python3
-# Surface.get_at((x, y)): return Color       bra skit
-# set_at((x, y), Color)
 import pygame
 import random
 #from queue import *
@@ -13,7 +11,7 @@ TILE_SIZE = 10
 BORDER_SIZE = 1
 
 #The share of blocked tiles
-share = 500
+share = 1200
 tileNumber = (width/TILE_SIZE) * (height/TILE_SIZE)
 
 start = (0,0)
@@ -47,7 +45,6 @@ class PriorityQueue:
         return heapq.heappop(self.elements)[1]
 
 class Tile(object):
-    # takes position and obsticle, which is a boolean representing if its an obsticle or not 
     def __init__(self, x, y):
         self.pos = (x, y)
         self.size = TILE_SIZE
@@ -63,17 +60,8 @@ class Tile(object):
             self.goal = False
         
 
-    #def getBool(self):
-    #    return self.obsticle
-
-    #def getColor(self):
-    #    return self.color
-
     def setColor(self, color):
         self.color = color
-
-    #def getPos(self):
-    #    return self.pos
 
 
     def setObsticle(self, obsticle):
@@ -89,15 +77,6 @@ class Tile(object):
 
 def main():
     pygame.init()
-
-
-
-    #window and clock setup
-    #gameDisplay = pygame.display.set_mode((width,height))
-    #pygame.display.set_caption("nice to meet ya!")
-    #clock = pygame.time.Clock()
-    #background = pygame.Surface((width,height))
-   
     grid = []
     
     
@@ -112,18 +91,11 @@ def main():
                 obsticle = False
             tile.setObsticle(obsticle)
             
-            #pygame.draw.rect(background, tile.getColor(), (tile.getPos()[0], tile.getPos()[1], TILE_SIZE-BORDER_SIZE, TILE_SIZE-BORDER_SIZE))
             pygame.draw.rect(background, tile.color, (tile.pos[0], tile.pos[1], TILE_SIZE-BORDER_SIZE, TILE_SIZE-BORDER_SIZE))
-
 
             grid[i].append(tile)
 
-    
 
-    #print ("45")
-    #temp = (grid[45].getCord)
-    #print (temp)
-    ## grid[45].changeColor(red)
     gameDisplay.blit(background,(0,0)) #draws background
 
 
@@ -135,20 +107,12 @@ def main():
         #in the last frame (often only one)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                #crashed = True  #Not the best way of doing it
                 return
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return
-            #crashed = True  #Not the best way of doing it
-           # print(event)
-        
-        
+
         
 
-
-
-        #gameDisplay.fill(white)
-        #car(carx,cary)
         pygame.display.update()
         clock.tick(60) #Limits the frame rate to 60 frames per second
 
@@ -173,49 +137,39 @@ def aStar(grid, start, goal):
         if current == goal:
             break
 
-        #show(blue, grid[current[0]][current[1]].pos[0], grid[current[0]][current[1]].pos[1])
-        print (current)
+        show(blue, grid[current[0]][current[1]].pos[0], grid[current[0]][current[1]].pos[1])
+        
         for node in neighbours(grid, current):
             new_cost = cost_so_far[current] + 1
-            #print (node)
             if node not in cost_so_far or new_cost < cost_so_far[node]:
-                #print (node)
                 cost_so_far[node] = new_cost
                 prio = new_cost + heuristic(goal, node)
                 frontier.put(node, prio)
                 came_from[node] = current
                 
-                show(blue, grid[node[0]][node[1]].pos[0], grid[node[0]][node[1]].pos[1])
-
 
     temp = current
     while (temp in came_from):
         show(green, grid[temp[0]][temp[1]].pos[0], grid[temp[0]][temp[1]].pos[1])
         path.append(temp)
         temp = came_from[temp]
-    #print (path)
     return path
 
 def neighbours(grid, node):
     neigh = []
     if ((0 <= (node[0]+1) < width/TILE_SIZE) and (0 <= (node[1]) < height/TILE_SIZE)):
         if not grid[node[0]+1][node[1]].obsticle:
-            #neigh.append(grid[node[0]+1][node[1]])
             neigh.append(((node[0]+1),(node[1])))
     if ((0 <= (node[0]-1) < width/TILE_SIZE) and (0 <= (node[1]) < height/TILE_SIZE)):
         if not grid[node[0]-1][node[1]].obsticle:
-            #neigh.append(grid[node[0]-1][node[1]])
             neigh.append(((node[0]-1),(node[1])))
     if ((0 <= (node[0]) < width/TILE_SIZE) and (0 <= (node[1]+1) < height/TILE_SIZE)):
         if  not grid[node[0]][node[1]+1].obsticle:
-            #neigh.append(grid[node[0]][node[1]+1])
             neigh.append(((node[0]),(node[1]+1)))
     if ((0 <= (node[0]) < width/TILE_SIZE) and (0 <= (node[1]-1) < height/TILE_SIZE)):
         if not grid[node[0]][node[1]-1].obsticle:
-            #neigh.append(grid[node[0]][node[1]-1])
             neigh.append(((node[0]),(node[1]-1)))
     
-    #print (neigh)
     return neigh
 
 #calculated an estimated distance to the goal
@@ -229,7 +183,7 @@ def show(color, x,y):
     gameDisplay.blit(background,(0,0))
     events = pygame.event.get()
     pygame.display.update()
-    clock.tick(60)
+    #clock.tick(60)
 
 
 if __name__ == '__main__': main()

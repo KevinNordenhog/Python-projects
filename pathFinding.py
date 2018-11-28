@@ -10,12 +10,13 @@ height = 600
 TILE_SIZE = 10
 BORDER_SIZE = 1
 
-#The share of regular tiles
-share = 10
+#The share of blocked tiles
+share = 350
+tileNumber = (width/TILE_SIZE) * (height/TILE_SIZE)
 
 start = (0,0)
 
-goal = (width/TILE_SIZE, height/TILE_SIZE)
+goal = (width-TILE_SIZE, height-TILE_SIZE)
 
 
 #Colors in rgb
@@ -27,15 +28,15 @@ blue = (0,0,255)
 
 class Tile(object):
     # takes position and obsticle, which is a boolean representing if its an obsticle or not 
-    def __init__(self, x, y, obsticle):
+    def __init__(self, x, y):
         self.pos = (x, y)
         self.size = TILE_SIZE
-        self.obsticle = obsticle
+        #self.obsticle = obsticle
 
-        if (obsticle):
-            self.color = black
-        else:
-            self.color = white
+        #if (obsticle):
+        #    self.color = black
+        #else:
+        #    self.color = white
 
         if ((x,y) == start):
             self.start = True
@@ -51,12 +52,31 @@ class Tile(object):
     def getBool(self):
         return self.obsticle
 
+    def getColor(self):
+        return self.color
+
     def setColor(self, color):
         self.color = color
 
     def getPos(self):
-        return pos
+        return self.pos
 
+    #def goal(self):
+    #    return self.goal
+
+    #def start(self):
+    #    return self.start
+
+    def setObsticle(self, obsticle):
+        self.obsticle = obsticle
+        if (obsticle):
+            self.color = black
+        elif (self.start):
+            self.color = green
+        elif (self.goal):
+            self.color = red
+        else:
+            self.color = white
 
 def main():
     pygame.init()
@@ -72,12 +92,33 @@ def main():
     grid = []
     background = pygame.Surface((width,height))
 
+    #for i in range(0, width//TILE_SIZE):
+    #    grid.append([])
+    #    for j in range(0, height//TILE_SIZE):
+    #        pygame.draw.rect(background,blue,(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE-BORDER_SIZE,TILE_SIZE-BORDER_SIZE))
+    #        grid[i].append((0))
+    
     for i in range(0, width//TILE_SIZE):
         grid.append([])
         for j in range(0, height//TILE_SIZE):
-            pygame.draw.rect(background,blue,(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE-BORDER_SIZE,TILE_SIZE-BORDER_SIZE))
+            tile = Tile(i*TILE_SIZE, j*TILE_SIZE)
+ 
+            rand = random.randint(0,tileNumber)
+            if (rand < share and not tile.start and not tile.goal):
+                obsticle = True
+            else:
+                obsticle = False
+            #tile = Tile(i*TILE_SIZE, j*TILE_SIZE)
+            tile.setObsticle(obsticle)
+            
+            pygame.draw.rect(background, tile.getColor(), (tile.getPos()[0], tile.getPos()[1], TILE_SIZE-BORDER_SIZE, TILE_SIZE-BORDER_SIZE))
+            #pygame.draw.rect(background,blue,(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE-BORDER_SIZE,TILE_SIZE-BORDER_SIZE))
+
+
             grid[i].append((0))
-    
+
+
+
     #print ("45")
     #temp = (grid[45].getCord)
     #print (temp)
@@ -86,9 +127,8 @@ def main():
 
 
 
-    #crashed = False
-    #Game loop
-    while 1:#not crashed:
+    
+    while 1:
         
         #Loops through all the events that happened 
         #in the last frame (often only one)
@@ -117,5 +157,4 @@ def main():
 if __name__ == '__main__': main()
 
 
-#def car(x,y):
-#    gameDisplay.blit(carImg, (x,y))
+

@@ -178,6 +178,8 @@ def heuristic(goal, node):
     (x2, y2) = node
     return abs(x1-x2) + abs(y1-y2)
 
+
+#Pygame syntax in order to draw outside the main loop
 def show(color, x,y):
     pygame.draw.rect(background, color, (x, y, TILE_SIZE-BORDER_SIZE, TILE_SIZE-BORDER_SIZE))
     gameDisplay.blit(background,(0,0))

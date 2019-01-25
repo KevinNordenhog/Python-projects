@@ -3,7 +3,7 @@ import pygame
 import random
 
 FPS = 4
-CELL_SIZE = 5
+CELL_SIZE = 10
 SHARE = 1 #share of alive cells
 
 width = 800

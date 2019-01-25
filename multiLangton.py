@@ -16,7 +16,7 @@ height = 600
 antNumber = int(input("How many ants do you want?"))
 
 #Colors in rgb
-black = (0,0,0,)
+black = (0,0,0)
 white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
@@ -85,31 +85,16 @@ def main():
             #print(event)
      
         for i in range(0,1000):
-            # if direction == UP:
-            #     position[1] = (position[1] + 1) % height
-            # elif direction == RIGHT:
-            #     position[0] = (position[0] + 1) % width
-            # elif direction == DOWN:
-            #     position[1] = (position[1] - 1) % height
-            # elif direction == LEFT:
-            #     position[0] = (position[0] - 1) % width
-
             for ant in ants:
                 ant.move()
-                # ant.changeDir()
                 if gameDisplay.get_at(ant.getPos()) != black: #== ant.getColor():
-                    #direction = (direction - 1) % 4
                     ant.changeDir(-1)
                     gameDisplay.set_at(ant.getPos(), black)
                 else:
-                    #direction = (direction + 1) % 4
                     ant.changeDir(1)
-                    #print (ant.getPos())
-                    #print (ant.getColor())
                     gameDisplay.set_at(ant.getPos(), ant.getColor())
 
         
-        #gameDisplay.fill(white)
         pygame.display.update()
         clock.tick(60) #Limits the frame rate to 60 frames per second
 

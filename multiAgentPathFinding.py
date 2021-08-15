@@ -126,7 +126,7 @@ def main():
     for a in agents:
         #show(agent.color, grid[temp[0]][temp[1]].pos[0], grid[temp[0]][temp[1]].pos[1])
         #def show(color, x,y):
-        print (a.getPath())
+        #print (a.getPath())
         for coord in a.getPath():
             show(a.color, grid[coord[0]][coord[1]].pos[0], grid[coord[0]][coord[1]].pos[1])
             #print (coord)
